@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Menu</title>
+	<script src="script.js"></script>
+	<style type="text/css">
+			
+		body{
+			background-color: black;	
+		}
+
+		@font-face {
+    		font-family: ffMenu;
+    		src: url(font/Final_Fantasy_VII.woff);
+		}
+
+		div.characterPanel{
+			color: white;
+			font-family: ffMenu;
+			font-size: 42px;
+			text-shadow: 2px 2px black;
+
+			position: absolute;
+
+			background: #00318A; /* For browsers that do not support gradients */
+		    background: -webkit-linear-gradient(#00318A, #000034); /* For Safari 5.1 to 6.0 */
+		    background: -o-linear-gradient(#00318A, #000034); /* For Opera 11.1 to 12.0 */
+		    background: -moz-linear-gradient(#00318A, #000034); /* For Firefox 3.6 to 15 */
+		    background: linear-gradient(to bottom right, #00318A, #000034); /* Standard syntax */
+
+		    border-width: 7px;  
+    		border-style:groove;
+    		border-radius: 13px;
+    		border-color: #B9B9B9;
+		}
+
+		a{
+			color: white;
+
+		}
+
+		a:link{
+			text-decoration: none;
+		}
+
+		a:hover{
+			color: yellow;
+			text-decoration: underline;
+		}
+
+	</style>
+</head>
+<body>
+
+	<div id="characterPanel" class="characterPanel" style="
+			top: 15%;
+			right: 35%;
+			width: 50%;
+			height: 60%;">
+	</div>
+
+	<div id="sidePanel" class="characterPanel" style="
+		right: 22%;
+		top: 11%;
+		width: 15%;
+		height: 50%;">
+		<ul style="list-style-type: none;">
+			<li><a href="www.google.com">About</a></li>
+		  	<li>Skills</li>
+		  	<li>Portfolio</li>
+		  	<li>Contact</li>
+		  	<li>Quit</li>
+		</ul>  
+	</div>
+
+	<div id="timePanel" class="characterPanel" style="
+		right: 22%;
+		top: 64%;
+		width: 15%;
+		height: 8%;">
+		<p id="time" style="position: relative;
+		top:-30%;
+		right:-50%;
+		font-weight: bold;">
+			<h1 style="position: absolute;
+			font-weight: normal;
+			top:-10%;
+			right: 78%;
+			font-size: 42px;">Date: </h1>
+		</p>
+		<script type="text/javascript">
+			var today = new Date();
+			var d = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			document.getElementById("time").innerHTML = d;
+		</script>
+	</div>
+
+	<div id="locationPanel" class="characterPanel" style="
+		vertical-align: middle;
+		right: 22%;
+		top: 74%;
+		width: 25%;
+		height: 8%;">
+		<p style="position: relative;
+		top:-30%;
+		right:-5%;">
+			Lancashire, United Kingdom</p>
+	</div>
+
+
+
+</body>
+</html>

@@ -48,6 +48,11 @@
 			text-decoration: underline;
 		}
 
+		div.cursor{
+			position: absolute;
+			top:10%;
+		}
+
 	</style>
 </head>
 <body>
@@ -65,12 +70,81 @@
 		width: 15%;
 		height: 50%;">
 		<ul style="list-style-type: none;">
-			<li><a href="www.google.com">About</a></li>
-		  	<li>Skills</li>
-		  	<li>Portfolio</li>
-		  	<li>Contact</li>
-		  	<li>Quit</li>
-		</ul>  
+			<li><a href="" onclick="setAndChange(0);return false;">About</a></li>
+		  	<li><a href="" onclick="setAndChange(1);return false;">Skills</li>
+		  	<li><a href="" onclick="setAndChange(2);return false;">Portfolio</li>
+		  	<li><a href="" onclick="setAndChange(3);return false;">Contact</li>
+		  	<li><a href="index.html" onclick="">Quit</li>
+		</ul>
+		<div class="cursor" id="cursor">  
+		<img src="cursor.png"></img>
+		</div>
+		<script type="text/javascript">
+			var audio = new Audio('cMove.mp3');
+			var menu = ['about', 'skills', 'portfolio', 'contact', 'quit'];
+			var selected = 0;
+
+			var cp = document.getElementById('cursor');
+			window.onkeydown = function(e){
+				if( e.keyCode == 38 ){
+			   		if(selected > 0){
+			   			selected--;
+			   		}
+			   		audio.play();//up
+			   		moveCursor(menu[selected]);
+			   }else if( e.keyCode == 40 ){
+			   		if(selected < 4){
+			   			selected++;
+			  	 	}
+			   		audio.play(); //down
+			   		moveCursor(menu[selected]);
+			   }else if( e.keyCode == 13 ){
+			   		changeContent();
+			   }
+
+				moveCursor();
+			}
+
+			function moveCursor(){
+				switch(menu[selected]) {
+			    case "about":
+			    	cp.style.top = '10%';
+			        break;
+			    case "skills":
+			    	cp.style.top = '23%';
+			        break;
+			    case "portfolio":
+			    	cp.style.top = '36%';
+			        break;
+			    case "contact":
+			    	cp.style.top = '50%';
+			        break;
+			    case "quit":
+			    	cp.style.top = '63%';
+			        break;
+			    default:
+			    	break;
+				}	
+			}
+
+			var charpan = document.getElementById("characterPanel");
+
+			function setAndChange(i){
+				selected = i;
+				audio.play();
+				changeContent();
+			}
+
+			function changeContent(){
+				if(menu[selected] == "about"){
+				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' style='top: 2%; right: -5%; position: relative; width: 20%; height: 33%;'  ></img></a> <h1 style='position: relative; right: -35%; top: -30%; font-size 32px;' > Paul </h1>";
+			}else{
+				characterPanel.innerHTML = "other";
+			}
+			}
+			
+			
+		</script>
 	</div>
 
 	<div id="timePanel" class="characterPanel" style="

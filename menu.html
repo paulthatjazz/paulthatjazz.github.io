@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>Menu</title>
-	<script src="script.js"></script>
+	<script src="http://momentjs.com/downloads/moment.js">
+
+	</script>
 	<style type="text/css">
 			
 		body{
@@ -55,7 +57,7 @@
 
 	</style>
 </head>
-<body>
+<body onload="changeContent()">
 
 	<div id="characterPanel" class="characterPanel" style="
 			top: 15%;
@@ -128,6 +130,7 @@
 			}
 
 			var charpan = document.getElementById("characterPanel");
+			
 
 			function setAndChange(i){
 				selected = i;
@@ -136,9 +139,63 @@
 				changeContent();
 			}
 
+			function calcAge(dateString) {
+			  var birthday = +new Date(dateString);
+			  return ~~((Date.now() - birthday) / (31557600000));
+			}
+
 			function changeContent(){
-				if(menu[selected] == "about"){
-				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' style='top: 2%; right: -5%; position: relative; width: 20%; height: 33%;'  ></img></a> <h1 style='position: relative; right: -35%; top: -30%; font-size 32px;' > Paul </h1>";
+			var a = calcAge("11/28/1989");
+			var s = moment([2017, 11, 28]).fromNow();
+			var xpb;
+			switch(s){
+				case "in 11 months":
+					xpb = "5px";
+				break;
+				case "in 10 months":
+					xpb = "10px";
+				break;
+				case "in 9 months":
+					xpb = "20px";
+				break;
+				case "in 8 months":
+					xpb = "40px";
+				break;
+				case "in 7 months":
+					xpb = "60px";
+				break;
+				case "in 6 months":
+					xpb = "80px";
+				break;
+				case "in 5 months":
+					xpb = "100px";
+				break;
+				case "in 4 months":
+					xpb = "120px";
+				break;
+				case "in 3 months":
+					xpb = "140px";
+				break;
+				case "in 2 months":
+					xpb = "160px";
+				break;
+				case "in 1 month":
+					xpb = "180px";
+				break;
+				default:
+					xpb = "200px";
+				break;
+			}
+			if(menu[selected] == "about"){
+				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' style='top: 4%; right: 76%; position: absolute; width: 20%; height: 33%;'  ></img></a> <h1 style='position: relative; right: -30%; top: -2%; font-size: 56px; font-weight: normal;' > Paul </h1> <div id='age'> </div> <div id='ageval'>age</div><div id='expBar'><div id='nl'>next level</div><div id='exp'></div></div> ";
+				document.getElementById("expBar").style = "border-width: 4px; border-style: groove; position: absolute; width: 200px; height: 15px; background-color: DimGrey; right: 49%; top: 24%;";
+				document.getElementById("exp").style = "position: relative; top: 0%; right 0%; width: 50px; height: 15px; background-color: LawnGreen;";
+				document.getElementById("exp").style.width = xpb;
+				document.getElementById("nl").style = "position: absolute; top: -250%;"
+				document.getElementById("age").style = "position: absolute; top: 10%; right: 66%; color: Cyan; font-weight: bold; font-size: 62px;"
+				document.getElementById("age").innerHTML = "LV"
+				document.getElementById("ageval").style = "position: absolute; top: 10%; right: 60%; font-size: 62px;"
+				document.getElementById("ageval").innerHTML = a;
 			}else{
 				characterPanel.innerHTML = "other";
 			}

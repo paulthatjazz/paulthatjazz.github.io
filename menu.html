@@ -6,6 +6,20 @@
 
 	</script>
 	<style type="text/css">
+
+		::-webkit-scrollbar {
+			background-color: black;
+		     border-width: 1px;
+			border-style: groove;
+		} /* this targets the default scrollbar (compulsory) */
+
+		::-webkit-scrollbar-thumb{
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			border-radius: 10px;
+			background: linear-gradient(to bottom right, #00318A, #000034); 
+			border-width: 1px;
+			border-style: groove;
+		}
 			
 		body{
 			background-color: black;	
@@ -187,7 +201,7 @@
 				break;
 			}
 			if(menu[selected] == "about"){
-				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' style='top: 4%; right: 76%; position: absolute; width: 20%; height: 33%;'  ></img></a> <h1 style='position: relative; right: -30%; top: -2%; font-size: 56px; font-weight: normal;' > Paul </h1> <div id='age'> </div> <div id='ageval'>age</div><div id='expBar'><div id='nl'>next level</div><div id='exp'></div></div> ";
+				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img style='top: 4%; right: 76%; position: absolute; width: 20%; height: 33%; border-width: 5px; border-style: groove;' src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' ></img></a> <h1 style='position: relative; right: -30%; top: -2%; font-size: 56px; font-weight: normal;' > Paul </h1> <div id='age'> </div> <div id='ageval'>age</div><div id='expBar'><div id='nl'>next level</div><div id='exp'></div></div> <div id='content'> </div>";
 				document.getElementById("expBar").style = "border-width: 4px; border-style: groove; position: absolute; width: 200px; height: 15px; background-color: DimGrey; right: 49%; top: 24%;";
 				document.getElementById("exp").style = "position: relative; top: 0%; right 0%; width: 50px; height: 15px; background-color: LawnGreen;";
 				document.getElementById("exp").style.width = xpb;
@@ -196,6 +210,8 @@
 				document.getElementById("age").innerHTML = "LV"
 				document.getElementById("ageval").style = "position: absolute; top: 10%; right: 60%; font-size: 62px;"
 				document.getElementById("ageval").innerHTML = a;
+				document.getElementById('content').style = "position: absolute; top: 40%; width: 90%; height: 50%; right: 6%; overflow-y: scroll;"
+				document.getElementById('content').innerHTML = "This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content This is content "
 			}else{
 				characterPanel.innerHTML = "other";
 			}

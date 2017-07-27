@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+	body{
+		background-color: DarkTurquoise;
+	}
+	button {
+    background-color: white; /* Green */
+    border: none;
+    color: DarkTuquoise;
+    font-family: Century Gothic;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    cursor: pointer;
+	}
+
+</style>
+<script type="text/javascript">
+	function swag(){
+		var plaintext = document.getElementById('plaintext').value;
+		var newtext = plaintext.toLowerCase();
+		var output = "";
+		var off = true;
+		for (var x = 0; x < newtext.length; x++)
+		{
+		    var c = newtext.charAt(x);
+		    if(off){
+		    	output = output + c.toLowerCase();
+		    	off = false;
+		    }else{
+		    	output = output + c.toUpperCase();
+		    	off = true;
+		    }
+		}
+		document.getElementById("output").innerHTML = output;
+	}
+</script>
+<head>
+	<title>Plaintext to Spongebob meme generator, automatic lover, atomic, atomic, overrrrrdriveeeeeeee what am i doing with my life</title>
+</head>
+<body onload="swag()">
+
+	<div style="position: absolute; top: 10%; right: 70%; color: white; font-size: 42px; font-family: Century Gothic;">Plain Text Here!</div>
+	<input id="plaintext" style="position: absolute; top: 20%; right: 45%; width: 50%; height: 10%; font-size: 42px; font-family: Century Gothic;" type="text" name="plaintext" value="my computer science degree sure paid off">
+	<div id="output" style="position: absolute; top: 40%; right: 50%; color: white; font-size: 42px; font-family: Century Gothic;"></div>
+	<button onclick="swag()" style="text-align: center;position: absolute;top: 20%; right: 32%; height: 10%; width: 10%;">Have fun</button>
+
+</body>
+</html>

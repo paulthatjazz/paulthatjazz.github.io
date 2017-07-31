@@ -98,6 +98,8 @@
 		<script type="text/javascript">
 			var audio = new Audio('cMove.mp3');
 			var menu = ['about', 'skills', 'portfolio', 'contact', 'quit'];
+			var pagenumber = 0;
+			var currentposts = 3;
 			var selected = 0;
 
 			var cp = document.getElementById('cursor');
@@ -151,6 +153,26 @@
 				audio.play();
 				moveCursor();
 				changeContent();
+			}
+
+			function next(){
+				audio.play();
+				if((pagenumber+1) == (currentposts+1)){
+
+				}else{
+					pagenumber++;
+				}
+				setAndChange(selected);
+			}
+
+			function back(){
+				audio.play();
+				if((pagenumber-1) == -1){
+
+				}else{
+					pagenumber--;
+				}
+				setAndChange(selected);
 			}
 
 			function calcAge(dateString) {
@@ -213,7 +235,21 @@
 				document.getElementById('content').style = "line-height: 70%; position: absolute; top: 45%; width: 90%; height: 50%; right: 6%; overflow-y: scroll;"
 				document.getElementById('content').innerHTML = "<br/> Well met! <br/> <br/> placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content "
 			}else if(menu[selected] == "portfolio"){
-				characterPanel.innerHTML = "<img src='https://i.gyazo.com/813e39db329a1aa0bf584478a02726a2.gif' alt='https://gyazo.com/813e39db329a1aa0bf584478a02726a2' width='800'/>";
+				characterPanel.innerHTML = "<div id='lbutton' onclick='back();'><a>Back</div></a> <div id='rbutton' onclick='next();'><a>Next</a></div> <div id='contentbox'></div";
+				document.getElementById("lbutton").style = "position: absolute; top: 90%; left: 150px; font-size: 65px; z-index: 1;";
+				document.getElementById("rbutton").style = "position: absolute; top: 90%; right: 150px; font-size: 65px; z-index: 2;";
+				document.getElementById("contentbox").style = "line-height: 70%; position: absolute; top: 5%; width: 90%; height: 80%; right: 6%; overflow-y: scroll;";
+				switch(pagenumber){
+					case 0:
+						document.getElementById("contentbox").innerHTML = "<br/><center><u>Dissertation - 'Artifical Intelligence In Video Games'</u></center> <br/> <br/> <center><img src='https://i.gyazo.com/813e39db329a1aa0bf584478a02726a2.gif' alt='https://gyazo.com/813e39db329a1aa0bf584478a02726a2' width='80%'/></center> <br/> <u>Abstract</u> <br/> <br/> 'This dissertation discusses the current and potential uses of artificial intelligence (AI) methods for the use of video gaming. Methods using state machines and navigation algorithms used in popular games such as F.E.A.R. are discussed to develop an understanding of and how they could be implemented into a fighting game. Other more advanced methods such as the use of genetic algorithms are also discussed to gain an understanding of how these could be the next step for AI in video games'";
+						break;
+					case 1:
+						document.getElementById("contentbox").innerHTML = "<br/><center><u>Virtual Reality Project'</u></center>";
+						break;
+					default:
+					break;
+				}
+				//characterPanel.innerHTML = "<img src='https://i.gyazo.com/813e39db329a1aa0bf584478a02726a2.gif' alt='https://gyazo.com/813e39db329a1aa0bf584478a02726a2' width='800'/>";
 
 			}else{
 				characterPanel.innerHTML = "other";

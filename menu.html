@@ -75,15 +75,15 @@
 
 	<div id="characterPanel" class="characterPanel" style="
 			top: 15%;
-			right: 35%;
-			width: 50%;
+			left: 15%;
+			width: 52%;
 			height: 60%;">
 	</div>
 
 	<div id="sidePanel" class="characterPanel" style="
-		right: 22%;
+		left: 65%;
 		top: 11%;
-		width: 15%;
+		width: 300px;
 		height: 50%;">
 		<ul style="list-style-type: none;">
 			<li><a href="" onclick="setAndChange(0);return false;">About</a></li>
@@ -201,17 +201,20 @@
 				break;
 			}
 			if(menu[selected] == "about"){
-				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img style='top: 4%; right: 76%; position: absolute; width: 20%; height: 33%; border-width: 5px; border-style: groove;' src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' ></img></a> <h1 style='position: relative; right: -30%; top: -2%; font-size: 56px; font-weight: normal;' > Paul </h1> <div id='age'> </div> <div id='ageval'>age</div><div id='expBar'><div id='nl'>next level</div><div id='exp'></div></div> <div id='content'> </div>";
-				document.getElementById("expBar").style = "border-width: 4px; border-style: groove; position: absolute; width: 200px; height: 15px; background-color: DimGrey; right: 49%; top: 24%;";
+				characterPanel.innerHTML = "<a href='https://github.com/Foxino'><img style='top: 30px; right: -40px; position: relative; width: 160px; height: 160px; border-width: 5px; border-style: groove;' src='https://avatars0.githubusercontent.com/u/29954653?v=4&s=460' > <div style='position: absolute; left: 240px; top: 30px; font-size: 56px; font-weight: normal;' > Paul </div></img></a><div id='age'> </div> <div id='ageval'>age</div><div id='expBar'><div id='nl'>next level</div><div id='exp'></div></div> <div id='content'> </div>";
+				document.getElementById("expBar").style = "border-width: 4px; border-style: groove; position: absolute; width: 200px; height: 15px; background-color: DimGrey; left : 235px; top: 145px";
 				document.getElementById("exp").style = "position: relative; top: 0%; right 0%; width: 50px; height: 15px; background-color: LawnGreen;";
 				document.getElementById("exp").style.width = xpb;
 				document.getElementById("nl").style = "position: absolute; top: -250%;"
-				document.getElementById("age").style = "position: absolute; top: 10%; right: 66%; color: Cyan; font-weight: bold; font-size: 62px;"
+				document.getElementById("age").style = "position: absolute; top: 65px; left: 240px; color: Cyan; font-weight: bold; font-size: 62px;"
 				document.getElementById("age").innerHTML = "LV"
-				document.getElementById("ageval").style = "position: absolute; top: 10%; right: 60%; font-size: 62px;"
+				document.getElementById("ageval").style = "position: absolute; top: 65px; left: 290px; font-size: 62px;"
 				document.getElementById("ageval").innerHTML = a;
 				document.getElementById('content').style = "line-height: 70%; position: absolute; top: 45%; width: 90%; height: 50%; right: 6%; overflow-y: scroll;"
 				document.getElementById('content').innerHTML = "<br/> Well met! <br/> <br/> placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content placeholder content "
+			}else if(menu[selected] == "portfolio"){
+				characterPanel.innerHTML = "<img src='https://i.gyazo.com/813e39db329a1aa0bf584478a02726a2.gif' alt='https://gyazo.com/813e39db329a1aa0bf584478a02726a2' width='800'/>";
+
 			}else{
 				characterPanel.innerHTML = "other";
 			}
@@ -222,10 +225,10 @@
 	</div>
 
 	<div id="timePanel" class="characterPanel" style="
-		right: 22%;
+		left: 65%;
 		top: 64%;
-		width: 15%;
-		height: 8%;">
+		width: 300px;
+		height: 75px;">
 		<p id="time" style="position: relative;
 		top:-30%;
 		right:-50%;
@@ -245,13 +248,13 @@
 
 	<div id="locationPanel" class="characterPanel" style="
 		vertical-align: middle;
-		right: 22%;
+		left: 56%;
 		top: 74%;
 		width: 25%;
-		height: 8%;">
+		height: 75px">
 		<p style="position: relative;
-		top:-30%;
-		right:-5%;">
+		top:-24px;
+		left: 30px;">
 			United Kingdom</p>
 	</div>
 

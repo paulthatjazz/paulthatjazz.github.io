@@ -3,6 +3,10 @@ body {
     min-height: 100vh;
     transition: background 1s ease;
     overflow: hidden;
+    overflow-x: hidden; /* Explicitly prevent horizontal scrolling */
+    width: 100%;
+    max-width: 100vw; /* Ensure body doesn't exceed viewport width */
+    position: relative;
 }
 
 /* Loading screen styles */
@@ -156,15 +160,33 @@ body {
     pointer-events: none;
 }
 
+/* Ensure all fixed and absolute positioned elements respect viewport */
+.cloud, .celestial, .star, .stars-container {
+    pointer-events: none; /* Prevent these elements from capturing mouse events */
+}
+
+/* Cloud container for overflow control */
+.cloud-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Fix cloud positioning to stay within viewport */
 .cloud {
     position: absolute;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 100px;
     filter: blur(3px);
     will-change: transform;
-    transform: translateZ(0);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
     z-index: 5;
+    overflow: visible; /* Allow cloud puffs to overflow the cloud itself */
 }
 
 .cloud::before,
@@ -224,55 +246,139 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
-/* Main content styles */
-.main-content {
+/* Add grass at the bottom */
+.grass {
+    display: none; /* Hide grass completely */
+    /*
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10; /* Above background but below loading screen */
-    opacity: 0; /* Initially hidden */
-    transition: opacity 1s ease; /* Smooth fade-in */
-    pointer-events: none; /* No interaction while hidden */
+    height: 35px; 
+    background-color: #2e8b2e; 
+    z-index: 4;
+    overflow: hidden;
+    filter: blur(1.5px);
+    box-shadow: 0 -5px 10px rgba(46, 139, 46, 0.3);
+    */
 }
 
-.main-content.visible {
-    opacity: 1;
-    pointer-events: auto;
+/* Add texture to grass using pseudo-elements for the blades */
+.grass::before, .grass::after {
+    display: none; /* Hide grass elements */
+    content: '';
 }
 
-.main-content h1 {
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: clamp(2rem, 5vw, 4rem); /* Responsive font size that scales with viewport */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    text-align: center;
-    padding: clamp(10px, 3vw, 20px); /* Responsive padding */
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    max-width: 90vw; /* Prevent text from overflowing on small screens */
-    word-wrap: break-word; /* Allow long words to break */
+/*
+.grass::before {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    filter: blur(1px);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 5%,
+        #2e8b2e 5%,
+        #2e8b2e 10%,
+        transparent 10%,
+        transparent 15%,
+        #2e8b2e 15%,
+        #2e8b2e 20%,
+        transparent 20%,
+        transparent 25%,
+        #2e8b2e 25%,
+        #2e8b2e 30%,
+        transparent 30%,
+        transparent 35%,
+        #2e8b2e 35%,
+        #2e8b2e 40%,
+        transparent 40%,
+        transparent 45%,
+        #2e8b2e 45%,
+        #2e8b2e 50%,
+        transparent 50%,
+        transparent 55%,
+        #2e8b2e 55%,
+        #2e8b2e 60%,
+        transparent 60%,
+        transparent 65%,
+        #2e8b2e 65%,
+        #2e8b2e 70%,
+        transparent 70%,
+        transparent 75%,
+        #2e8b2e 75%,
+        #2e8b2e 80%,
+        transparent 80%,
+        transparent 85%,
+        #2e8b2e 85%,
+        #2e8b2e 90%,
+        transparent 90%,
+        transparent 95%,
+        #2e8b2e 95%,
+        #2e8b2e 100%
+    );
 }
 
-.main-content p {
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 2rem;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    text-align: center;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+.grass::after {
+    position: absolute;
+    top: -8px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    filter: blur(2.8px);
+    background: linear-gradient(
+        90deg,
+        #2e8b2e 0%,
+        #2e8b2e 5%,
+        transparent 5%,
+        transparent 10%,
+        #2e8b2e 10%,
+        #2e8b2e 15%,
+        transparent 15%,
+        transparent 20%,
+        #2e8b2e 20%,
+        #2e8b2e 25%,
+        transparent 25%,
+        transparent 30%,
+        #2e8b2e 30%,
+        #2e8b2e 35%,
+        transparent 35%,
+        transparent 40%,
+        #2e8b2e 40%,
+        #2e8b2e 45%,
+        transparent 45%,
+        transparent 50%,
+        #2e8b2e 50%,
+        #2e8b2e 55%,
+        transparent 55%,
+        transparent 60%,
+        #2e8b2e 60%,
+        #2e8b2e 65%,
+        transparent 65%,
+        transparent 70%,
+        #2e8b2e 70%,
+        #2e8b2e 75%,
+        transparent 75%,
+        transparent 80%,
+        #2e8b2e 80%,
+        #2e8b2e 85%,
+        transparent 85%,
+        transparent 90%,
+        #2e8b2e 90%,
+        #2e8b2e 95%,
+        transparent 95%,
+        transparent 100%
+    );
 }
+*/
 
 /* Attribution styles */
 .attribution {
     position: fixed;
-    bottom: 20px;
+    bottom: 20px; /* Increased to sit above the taller grass */
     left: 0;
     width: 100%;
     text-align: center;
@@ -297,5 +403,601 @@ body {
         width: 150px;
         height: 150px;
         border-width: 20px;
+    }
+}
+
+/* Dog placeholder styles */
+.dog-placeholder {
+    display: none;
+    position: fixed;
+    bottom: 35px; /* Sits directly on the grass */
+    left: 15%; /* Position from the left */
+    width: 60px;
+    height: 40px;
+    background-color: #fffba7; /* Brown color for the dog */
+    border-radius: 10px 10px 0 0; /* Rounded top corners for the body */
+    z-index: 9; /* In front of grass, behind UI elements */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: subtle-bounce 2s infinite ease-in-out; /* Simple bouncing animation */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 1s ease; /* Fade in with other elements */
+}
+
+/* Add dog head */
+.dog-placeholder::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 35px;
+    width: 25px;
+    height: 25px;
+    background-color: #fffba7;
+    border-radius: 50% 50% 50% 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Add dog tail */
+.dog-placeholder::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    right: -10px;
+    width: 25px;
+    height: 8px;
+    background-color: #fffba7;
+    border-radius: 0 4px 4px 0;
+    transform-origin: left center;
+    animation: wag-tail 1s infinite ease-in-out alternate;
+}
+
+/* Dog ear - using a separate element */
+.dog-ear {
+    position: absolute;
+    top: -22px;
+    left: 42px;
+    width: 12px;
+    height: 15px;
+    background-color: #fffba7;
+    border-radius: 50% 50% 0 0;
+    transform: rotate(15deg);
+}
+
+/* Subtle bounce animation */
+@keyframes subtle-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Tail wagging animation */
+@keyframes wag-tail {
+    0% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(10deg);
+    }
+}
+
+/* Avatar Styles */
+.avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.avatar img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar heading styles */
+.sidebar-content h1 {
+    color: white;
+    text-align: center;
+    font-size: 1.8rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    font-family: Arial, sans-serif;
+}
+
+.sidebar-content h2 {
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar Styles */
+.side {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 250px;
+    background-color: rgba(0, 0, 0, 0.33);
+    z-index: 200;
+    transition: transform 0.3s ease, opacity 0.8s ease;
+    backdrop-filter: blur(5px);
+    opacity: 0; /* Initially hidden */
+}
+
+/* Show sidebar when clouds are loaded */
+.side.visible {
+    opacity: 1;
+}
+
+.sidebar-toggle {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 101;
+}
+
+.sidebar-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-content {
+    padding: 50px 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.social-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.social-link i {
+    font-size: 24px;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+.social-link span {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .side {
+        transform: translateX(-250px);
+    }
+    
+    .sidebar-toggle {
+        display: block;
+        left: 20px;
+        right: auto;
+    }
+    
+    .sidebar-open .side {
+        transform: translateX(0);
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+/* Content and Main Layout */
+.content {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    max-width: 100vw;
+}
+
+.main {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    z-index: 150;
+    padding: 20px;
+    box-sizing: border-box;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.main-content {
+    padding: 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    height: 70vh; /* Fixed height - 70% of viewport height */
+    overflow-y: auto; /* Add vertical scrollbar when needed */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* For Firefox */
+    background-color: rgba(0, 0, 0, 0.33);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    max-width: 800px;
+    display: none; /* Initially hide all sections */
+}
+
+/* Make main content visible when active */
+.main-content.active {
+    display: block !important;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: transparent; /* Track background */
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Scrollbar color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.main h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Media query for desktop - adjust main content to accommodate sidebar */
+@media (min-width: 769px) {
+    .main {
+        padding-left: 270px; /* 250px sidebar width + 20px padding */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center content horizontally */
+        width: calc(100% - 270px); /* Adjust width to account for sidebar */
+    }
+    
+    .main-content {
+        margin: 0 auto; /* Center with auto margins */
+    }
+    
+    .main-nav {
+        width: 100%;
+        max-width: 800px; /* Match content width */
+    }
+}
+
+/* Media query for mobile devices - make main take full width */
+@media (max-width: 768px) {
+    .main {
+        padding-left: 20px;
+        transition: padding-left 0.3s ease;
+    }
+    
+    .sidebar-open .main {
+        filter: blur(3px);
+    }
+}
+
+/* Main Navigation */
+.main-nav {
+    margin-bottom: 30px;
+    width: 100%; /* Ensure full width */
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    position: relative; /* Enable z-index */
+    z-index: 150; /* Lower than mobile header */
+}
+
+.visible .main-nav {
+    opacity: 1;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    background-color: rgba(0, 0, 0, 0.33);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    max-width: 800px;
+    width: 100%; /* Ensure full width */
+}
+
+.main-nav li {
+    flex: 1;
+    text-align: center;
+}
+
+.main-nav a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 15px 0;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.main-nav li.active a {
+    background-color: rgba(255, 255, 255, 0.15);
+    font-weight: bold;
+}
+
+.main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Project Cards */
+.project-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.project-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.project-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Media query updates for mobile */
+@media (max-width: 768px) {
+    .main-nav ul {
+        width: 100%;
+    }
+}
+
+/* Publication Styles */
+.publication {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.publication:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.publication h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.pub-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.pub-meta p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.authors {
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+.venue {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+}
+
+.abstract {
+    margin-bottom: 15px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.pub-link {
+    display: inline-block;
+    color: #87CEEB;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.pub-link:hover {
+    color: white;
+}
+
+.pub-link i {
+    margin-right: 5px;
+}
+
+/* Mobile header styles */
+.mobile-header {
+    display: none; /* Hidden by default */
+    background-color: rgba(0, 0, 0, 0.33);
+    backdrop-filter: blur(5px);
+    padding: 10px 15px;
+    text-align: center;
+    width: 100%;
+    z-index: 180; /* Increase z-index to be higher than navbar */
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    flex-direction: column;
+    position: fixed; /* Keep fixed position */
+    top: 0; /* Position at top */
+    left: 0;
+    box-sizing: border-box;
+}
+
+.mobile-header.visible {
+    opacity: 1;
+}
+
+.mobile-header .avatar {
+    margin-bottom: 10px;
+}
+
+.mobile-header .avatar img {
+    width: 80px;
+    height: 80px;
+}
+
+.mobile-header-text {
+    text-align: center;
+}
+
+.mobile-header h1 {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 5px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    font-family: Arial, sans-serif;
+}
+
+.mobile-header h2 {
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: normal;
+    margin: 5px 0 10px;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    font-family: Arial, sans-serif;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0 0 0; /* Remove bottom padding - navbar will provide space */
+    }
+    
+    .mobile-header .avatar img {
+        width: 60px; /* Make avatar slightly smaller */
+        height: 60px;
+    }
+    
+    .mobile-header h1 {
+        font-size: 1.2rem; /* Slightly smaller text */
+        margin: 3px 0;
+    }
+    
+    .mobile-header h2 {
+        font-size: 0.8rem;
+        margin: 3px 0 10px; /* Increase bottom margin for spacing above navbar */
+    }
+    
+    /* Move navbar into mobile header */
+    .main-nav {
+        position: static; /* Reset position */
+        margin: 0; /* Remove margins */
+        order: 3; /* Place after header content */
+        padding: 0;
+        width: 100%;
+    }
+    
+    .main-nav ul {
+        margin: 0;
+        border-radius: 0; /* Remove rounded corners */
+        background-color: rgba(0, 0, 0, 0.4); /* Slightly darker background */
+    }
+    
+    .side {
+        transform: translateX(-250px);
+    }
+    
+    .sidebar-toggle {
+        display: block;
+        left: 20px;
+        right: auto;
+        z-index: 201; /* Make toggle appear above mobile header */
+    }
+    
+    .sidebar-open .side {
+        transform: translateX(0);
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .sidebar-open .sidebar-toggle span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    
+    .main {
+        padding-top: 150px; /* Adjust to match mobile header height including navbar */
+    }
+
+    /* Make mobile header sections easier to target with ordering */
+    .mobile-header .avatar {
+        order: 1;
+    }
+    
+    .mobile-header-text {
+        order: 2;
     }
 } 

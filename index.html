@@ -5,14 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paul Crossley</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="loading-screen">
         <div class="loading-spinner"></div>
     </div>
-    <section class="main-content">
-        <h1>We still cooking, please come back later</h1>
+    <!-- Container for clouds with overflow control -->
+    <div class="cloud-container"></div>
+    <!-- Mobile header that appears only on small screens -->
+    <div class="mobile-header">
+        <div class="avatar">
+            <img src="https://avatars.githubusercontent.com/u/29954653" alt="Paul Crossley">
+        </div>
+        <div class="mobile-header-text">
+            <h1>Paul Crossley</h1>
+            <h2>Research Fellow & Software Developer</h2>
+        </div>
+    </div>
+    <section class="content">
+        <div class="side">
+            <div class="sidebar-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="sidebar-content">
+                <div class="avatar">
+                    <img src="https://avatars.githubusercontent.com/u/29954653" alt="Paul Crossley">
+                </div>
+                <h1>Paul Crossley</h1>
+                <h2>Research Fellow & Software Developer</h2>
+                <div class="social-links">
+                    <a href="https://github.com/paulthatjazz" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/pauljoncrossley/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://twitter.com/paulthtjazz" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                        <span>Twitter</span>
+                    </a>
+                    <a href="mailto:p.j.crossley@sussex.ac.uk" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <nav class="main-nav">
+                <ul>
+                    <li class="active"><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                </ul>
+            </nav>
+            <div id="about" class="about-me main-content active">
+                <h1>About Me</h1>
+
+                <p>
+                    Paul is currently a Research Fellow and Software Developer at the Predictive Analytics Lab (PAL), where he works on LIMMMA (Landscapes integrative mapping and modelling for multifunctional analysis). His academic journey in Computer Science—earning both a BSc (2014-2017) and an MSc (2019-2020) from Liverpool Hope University—has laid the groundwork for a versatile career bridging both research and industry.
+                </p>
+                <p>
+                    He previously contributed as a Research Assistant at the University of Huddersfield on projects like "Hansard at Huddersfield" and "HUM19" and gained practical experience as a Software Developer with LMS Recruitment Systems, along with a variety of freelance engagements.
+                </p>
+                <p>
+                    His passion for machine learning is matched only by his curiosity about the ethical implications of AI. With aspirations to pursue a PhD in the near future, he continues to explore how innovative technology can be both powerful and responsible.
+                </p>
+            </div>
+            <div id="projects" class="projects main-content">
+                <h1>Projects</h1>
+                <p>Here are some of the key projects I've worked on:</p>
+                
+                <div class="project-card">
+                    <h2>LIMMMA</h2>
+                    <p>Landscapes integrative mapping and modelling for multifunctional analysis - A research project at PAL focused on applying machine learning to landscape analysis.</p>
+                </div>
+                
+                <div class="project-card">
+                    <h2>Hansard at Huddersfield</h2>
+                    <p>Digital humanities project analyzing parliamentary debates through computational methods and natural language processing.</p>
+                </div>
+                
+                <div class="project-card">
+                    <h2>HUM19</h2>
+                    <p>Historical research project applying digital techniques to 19th century archival materials.</p>
+                </div>
+            </div>
+            <div id="publications" class="publications main-content">
+                <h1>Publications</h1>
+                <p>Selected academic publications and research outputs:</p>
+                
+                <div class="publication">
+                    <h2>Hansard at Huddersfield: Adapting Corpus Linguistic Methods for Non-Specialist Use</h2>
+                    <div class="pub-meta">
+                        <p class="authors">Alexander von Lünen,
+                            Lesley Jeffries,
+                            Fransina Stradling,
+                            Hugo Sanjurjo González and
+                            Paul Crossley</p>
+                        <p class="venue">International Journal of Humanities and Arts Computing, 2023</p>
+                    </div>
+                    <a href="https://www.euppublishing.com/doi/10.3366/ijhac.2023.0298" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i> View Publication</a>
+                </div>
+            </div>
+        </div>
     </section>
+    <div class="dog-placeholder">
+        <div class="dog-ear"></div>
+    </div>
     <div class="attribution">
         © 2025 Paul Crossley
     </div>

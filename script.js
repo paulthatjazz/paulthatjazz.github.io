@@ -2,8 +2,11 @@
 let loadingScreen = null;
 let mainContent = null;
 let attribution = null;
+let dogPlaceholder = null;
 let celestialBody = null;
 let starsContainer = null;
+let mobileHeader = null;
+let cloudContainer = null;
 let starsCreated = false;
 let loadingComplete = false;
 let cloudsCreated = false;
@@ -37,7 +40,8 @@ function updateBackground() {
         currentGradient = gradients.night;
         timeOfDay = 'night';
     }
-    
+
+
     // Apply gradient to body
     body.style.background = currentGradient;
     
@@ -208,13 +212,19 @@ function updateCelestialBody(timeOfDay, hour) {
 
 function createCloud(horizontalPosition = false) {
     // Skip creating clouds if loading is not complete
-    if (!loadingComplete) return;
+    if (!loadingComplete || !cloudContainer) return;
     
     const cloud = document.createElement('div');
     cloud.className = 'cloud';
     
+    // Get viewport width
+    const viewportWidth = window.innerWidth;
+    
     // Smaller clouds - random width between 80 and 180px
-    const width = Math.random() * 100 + 80;
+    // Ensure clouds don't exceed 25% of viewport width
+    const maxWidth = Math.min(180, viewportWidth * 0.25);
+    const width = Math.random() * (maxWidth - 80) + 80;
+    
     // Height for cloud base (slightly taller proportion)
     const height = width * (Math.random() * 0.2 + 0.2); // 20-40% of width
     
@@ -241,18 +251,23 @@ function createCloud(horizontalPosition = false) {
     cloud.style.width = `${width}px`;
     cloud.style.height = `${height}px`;
     cloud.style.top = `${top}%`;
+    cloud.style.zIndex = '5'; // Explicitly set z-index to 5
     
-    // Apply transition for all clouds
-    cloud.style.transition = `left ${duration}s linear`;
+    // Use transform for animation instead of left property
+    cloud.style.transition = `transform ${duration}s linear`;
     
     // For initial clouds, distribute them across the screen
     // For new clouds, start off-screen to the left
     if (isInitial) {
         // Initial clouds are positioned based on the provided horizontal position parameter
-        cloud.style.left = `${horizontalPosition}%`;
+        // Convert percentage to viewport width for transform
+        const initialX = (horizontalPosition / 100) * viewportWidth;
+        cloud.style.left = '0';
+        cloud.style.transform = `translateX(${initialX}px)`;
     } else {
         // New clouds move from left to right
-        cloud.style.left = '-150px';
+        cloud.style.left = '0';
+        cloud.style.transform = 'translateX(-150px)';
     }
     
     // Set CSS variables for puffs
@@ -303,11 +318,14 @@ function createCloud(horizontalPosition = false) {
         cloud.appendChild(puff);
     }
     
-    document.body.appendChild(cloud);
+    // Add cloud to the cloud container instead of body
+    cloudContainer.appendChild(cloud);
     
-    // Animate all clouds - use different delays for initial vs. new clouds
+    // Animate all clouds using transform
     setTimeout(() => {
-        cloud.style.left = '120%'; // Move beyond right edge to ensure full exit
+        // Calculate final position as viewportWidth + some buffer
+        const finalPosition = viewportWidth + width + 50; // Add cloud width + buffer
+        cloud.style.transform = `translateX(${finalPosition}px)`;
     }, isInitial ? 100 : 50); // Slightly longer delay for initial clouds
     
     // Remove cloud after it has moved across the screen
@@ -366,26 +384,62 @@ function hideLoadingScreen() {
             loadingScreen.style.display = 'none';
             
             console.log('Initializing visual elements');
-            // Now create clouds and update visual elements
+            // First create clouds and update background
             createInitialClouds();
             createMovingClouds();
-            
-            // Update background to create stars and celestial body
             updateBackground();
             
-            // Show the main content after loading is complete
-            if (mainContent) {
-                console.log('Showing main content');
-                mainContent.classList.add('visible');
-            } else {
-                console.error('Main content element not found when trying to show it');
-            }
+            // Wait for clouds to initialize before showing content
+            setTimeout(() => {
+                // Show the main content after clouds are ready
+                if (mainContent) {
+                    console.log('Showing main content');
+                    mainContent.classList.add('visible');
+                    
+                    // Find all content sections and add active class to the first one
+                    const contentSections = document.querySelectorAll('.main-content');
+                    if (contentSections.length > 0) {
+                        contentSections.forEach(section => {
+                            if (section.style.display === 'block' || section.id === 'about') {
+                                section.style.opacity = '1';
+                                section.style.transform = 'translateY(0)';
+                            }
+                        });
+                    }
+                    
+                    // Explicitly show the navigation bar
+                    const mainNav = document.querySelector('.main-nav');
+                    if (mainNav) {
+                        mainNav.style.opacity = '1';
+                    }
+                    
+                    // Show the sidebar
+                    const sidebar = document.querySelector('.side');
+                    if (sidebar) {
+                        sidebar.classList.add('visible');
+                    }
+                    
+                    // Show the mobile header
+                    if (mobileHeader) {
+                        mobileHeader.classList.add('visible');
+                    }
+                } else {
+                    console.error('Main content element not found when trying to show it');
+                }
+                
+                // Show the dog placeholder
+                if (dogPlaceholder) {
+                    console.log('Showing dog placeholder');
+                    dogPlaceholder.style.opacity = '1';
+                }
+                
+                // Show the attribution text
+                if (attribution) {
+                    console.log('Showing attribution');
+                    attribution.style.opacity = '1';
+                }
+            }, 1500); // Wait 1.5s for clouds to be properly rendered
             
-            // Show the attribution text
-            if (attribution) {
-                console.log('Showing attribution');
-                attribution.style.opacity = '1';
-            }
         }, 1000); // Match this with the CSS transition time (1s in the CSS)
     } else {
         console.error('Loading screen element not found when trying to hide');
@@ -394,16 +448,52 @@ function hideLoadingScreen() {
         createMovingClouds();
         updateBackground();
         
-        // Show main content even if loading screen wasn't found
-        if (mainContent) {
-            console.log('Showing main content (fallback)');
-            mainContent.classList.add('visible');
-        }
-        
-        // Show attribution even if loading screen wasn't found
-        if (attribution) {
-            attribution.style.opacity = '1';
-        }
+        // Wait for clouds to initialize before showing content
+        setTimeout(() => {
+            // Show main content even if loading screen wasn't found
+            if (mainContent) {
+                console.log('Showing main content (fallback)');
+                mainContent.classList.add('visible');
+                
+                // Find all content sections and add active class to the first one
+                const contentSections = document.querySelectorAll('.main-content');
+                if (contentSections.length > 0) {
+                    contentSections.forEach(section => {
+                        if (section.style.display === 'block' || section.id === 'about') {
+                            section.style.opacity = '1';
+                            section.style.transform = 'translateY(0)';
+                        }
+                    });
+                }
+                
+                // Explicitly show the navigation bar
+                const mainNav = document.querySelector('.main-nav');
+                if (mainNav) {
+                    mainNav.style.opacity = '1';
+                }
+
+                // Show the sidebar
+                const sidebar = document.querySelector('.side');
+                if (sidebar) {
+                    sidebar.classList.add('visible');
+                }
+
+                // Show the mobile header
+                if (mobileHeader) {
+                    mobileHeader.classList.add('visible');
+                }
+            }
+            
+            // Show dog placeholder
+            if (dogPlaceholder) {
+                dogPlaceholder.style.opacity = '1';
+            }
+            
+            // Show attribution even if loading screen wasn't found
+            if (attribution) {
+                attribution.style.opacity = '1';
+            }
+        }, 1500); // Wait 1.5s for clouds to be properly rendered
     }
 }
 
@@ -429,6 +519,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadingScreen = document.querySelector('.loading-screen');
     mainContent = document.querySelector('.main-content');
     attribution = document.querySelector('.attribution');
+    dogPlaceholder = document.querySelector('.dog-placeholder');
+    mobileHeader = document.querySelector('.mobile-header');
+    cloudContainer = document.querySelector('.cloud-container');
+    
+    // Move navbar into mobile header if in mobile view
+    moveNavbarToMobileHeader();
+    
+    // Add resize listener to handle navbar positioning
+    window.addEventListener('resize', moveNavbarToMobileHeader);
     
     if (loadingScreen) {
         console.log('Loading screen found');
@@ -450,6 +549,12 @@ document.addEventListener('DOMContentLoaded', function() {
         attribution.style.opacity = '0';
     }
     
+    if (dogPlaceholder) {
+        console.log('Dog placeholder found');
+        // Ensure it's initially hidden
+        dogPlaceholder.style.opacity = '0';
+    }
+    
     // Set initial state variables
     loadingComplete = false;
     starsCreated = false;
@@ -464,7 +569,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Wait a bit then hide loading screen
     console.log('Setting timeout to hide loading screen');
     setTimeout(hideLoadingScreen, 1500);
+    
+    // Initialize sidebar
+    initSidebar();
+    
+    // Initialize tab navigation
+    initTabNavigation();
 });
+
+// Function to move the navbar into the mobile header on mobile view
+function moveNavbarToMobileHeader() {
+    const mobileHeader = document.querySelector('.mobile-header');
+    const mainNav = document.querySelector('.main-nav');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (mobileHeader && mainNav) {
+        if (isMobile) {
+            // Check if navbar is already in mobile header
+            if (mainNav.parentElement !== mobileHeader) {
+                // Move navbar into mobile header
+                mobileHeader.appendChild(mainNav);
+                console.log('Moved navbar into mobile header');
+            }
+        } else {
+            // Check if navbar is in mobile header
+            if (mainNav.parentElement === mobileHeader) {
+                // Move navbar back to main
+                const main = document.querySelector('.main');
+                if (main) {
+                    main.insertBefore(mainNav, main.firstChild);
+                    console.log('Moved navbar back to main');
+                }
+            }
+        }
+    }
+}
 
 // Create new moving clouds every 5-10 seconds
 const createMovingClouds = () => {
@@ -475,4 +614,92 @@ const createMovingClouds = () => {
         // Schedule next cloud creation only if loading is complete
         setTimeout(createMovingClouds, Math.random() * 5000 + 5000);
     }
-}; 
+};
+
+// Sidebar toggle functionality
+function initSidebar() {
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const body = document.body;
+    
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            body.classList.toggle('sidebar-open');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 768 && 
+                body.classList.contains('sidebar-open') && 
+                !event.target.closest('.side') && 
+                !event.target.closest('.sidebar-toggle')) {
+                body.classList.remove('sidebar-open');
+            }
+        });
+    }
+}
+
+// Tab navigation
+function initTabNavigation() {
+    // Get nav links
+    const navLinks = document.querySelectorAll('.main-nav a');
+    
+    // Get content sections
+    const contentSections = document.querySelectorAll('.main-content');
+    
+    // Add click event to each nav link
+    navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            
+            // Get the target section id from the href
+            const targetId = link.getAttribute('href').substring(1);
+            console.log('Tab clicked: ', targetId);
+            
+            // Hide all sections and remove active class
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+            });
+            
+            // Show the target section
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                console.log('Showing section: ', targetId);
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                // Force browser reflow
+                void targetSection.offsetWidth;
+                
+                // Apply the transition
+                targetSection.style.opacity = '1';
+                targetSection.style.transform = 'translateY(0)';
+            } else {
+                console.error('Target section not found: ', targetId);
+            }
+            
+            // Update nav active state
+            navLinks.forEach(navLink => {
+                navLink.parentElement.classList.remove('active');
+            });
+            link.parentElement.classList.add('active');
+        });
+    });
+    
+    // Show the default section (about)
+    const defaultSection = document.getElementById('about');
+    if (defaultSection) {
+        defaultSection.style.display = 'block';
+        defaultSection.classList.add('active');
+        
+        // When loading is complete, transition in the default section
+        setTimeout(() => {
+            if (loadingComplete) {
+                defaultSection.style.opacity = '1';
+                defaultSection.style.transform = 'translateY(0)';
+            }
+        }, 100);
+    }
+} 

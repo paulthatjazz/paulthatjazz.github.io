@@ -11,6 +11,32 @@ let starsCreated = false;
 let loadingComplete = false;
 let cloudsCreated = false;
 
+// Utility: get URL param
+function getUrlParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+}
+
+// Debug: override time of day if ?time=... is present
+let debugTimeOfDay = getUrlParam('time');
+let debugActive = !!debugTimeOfDay;
+
+// Optionally show a debug badge
+if (debugActive) {
+    const badge = document.createElement('div');
+    badge.textContent = `Debug: time=${debugTimeOfDay}`;
+    badge.style.position = 'fixed';
+    badge.style.bottom = '10px';
+    badge.style.right = '10px';
+    badge.style.background = 'rgba(0,0,0,0.7)';
+    badge.style.color = '#fff';
+    badge.style.padding = '4px 10px';
+    badge.style.borderRadius = '6px';
+    badge.style.fontSize = '0.95rem';
+    badge.style.zIndex = 99999;
+    document.body.appendChild(badge);
+}
+
 function updateBackground() {
     const hour = new Date().getHours();
     const body = document.body;
@@ -23,24 +49,43 @@ function updateBackground() {
         night: 'linear-gradient(to bottom, #191970, #000080, #000000)' // 8pm-5am
     };
 
-    // Set the appropriate gradient based on the hour
+    // Use debug time if present
     let currentGradient;
     let timeOfDay;
-    
-    if (hour >= 5 && hour < 11) {
-        currentGradient = gradients.morning;
-        timeOfDay = 'morning';
-    } else if (hour >= 11 && hour < 17) {
-        currentGradient = gradients.afternoon;
-        timeOfDay = 'afternoon';
-    } else if (hour >= 17 && hour < 20) {
-        currentGradient = gradients.evening;
-        timeOfDay = 'evening';
+    if (debugTimeOfDay) {
+        timeOfDay = debugTimeOfDay;
+        switch (timeOfDay) {
+            case 'morning':
+                currentGradient = gradients.morning;
+                break;
+            case 'afternoon':
+                currentGradient = gradients.afternoon;
+                break;
+            case 'evening':
+                currentGradient = gradients.evening;
+                break;
+            case 'night':
+                currentGradient = gradients.night;
+                break;
+            default:
+                currentGradient = gradients.afternoon;
+                timeOfDay = 'afternoon';
+        }
     } else {
-        currentGradient = gradients.night;
-        timeOfDay = 'night';
+        if (hour >= 5 && hour < 11) {
+            currentGradient = gradients.morning;
+            timeOfDay = 'morning';
+        } else if (hour >= 11 && hour < 17) {
+            currentGradient = gradients.afternoon;
+            timeOfDay = 'afternoon';
+        } else if (hour >= 17 && hour < 20) {
+            currentGradient = gradients.evening;
+            timeOfDay = 'evening';
+        } else {
+            currentGradient = gradients.night;
+            timeOfDay = 'night';
+        }
     }
-
 
     // Apply gradient to body
     body.style.background = currentGradient;
@@ -575,6 +620,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize tab navigation
     initTabNavigation();
+    
+    // Social dropdown toggle for mobile
+    const socialToggle = document.querySelector('.mobile-social-toggle');
+    const socialDropdown = document.querySelector('.mobile-social-dropdown');
+    if (socialToggle && socialDropdown) {
+        socialToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            socialDropdown.classList.toggle('open');
+        });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (socialDropdown.classList.contains('open') && !socialDropdown.contains(e.target) && e.target !== socialToggle) {
+                socialDropdown.classList.remove('open');
+            }
+        });
+    }
 });
 
 // Function to move the navbar into the mobile header on mobile view

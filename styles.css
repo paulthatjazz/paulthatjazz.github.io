@@ -1059,3 +1059,49 @@ body {
     }
     
 }
+
+.emoji {
+    font-size: 1.65rem;
+    margin-right: 5px;
+}
+
+.intro {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.wave {
+    animation: wave 2s infinite;
+    animation-delay: 1s;
+    animation-direction: alternate;
+    font-size: 2rem;
+    display: inline-block;
+}
+
+@keyframes wave {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(50deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.main-content p a {
+    color: gold;
+    text-decoration: none;
+}
+
+.main-content p a:hover {
+    color: rgb(255, 166, 0);
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+    animation-delay: 1s;
+    animation-direction: alternate;
+    display: inline-block;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}

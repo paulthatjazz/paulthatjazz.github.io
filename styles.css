@@ -1058,6 +1058,14 @@ body {
         border-width: 20px;
     }
     
+    .main-content {
+        padding-bottom: 10vh;
+    }
+
+    .main-nav ul {
+        border-radius: 0;
+        background-color: rgba(0, 0, 0, 0.00);
+    }
 }
 
 .emoji {

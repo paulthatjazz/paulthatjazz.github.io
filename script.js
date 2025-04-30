@@ -636,6 +636,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Search box event
+    const searchInput = document.getElementById('site-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            filterAndHighlightSections(this.value);
+        });
+    }
 });
 
 // Function to move the navbar into the mobile header on mobile view
@@ -762,5 +770,44 @@ function initTabNavigation() {
                 defaultSection.style.transform = 'translateY(0)';
             }
         }, 100);
+    }
+}
+
+// --- SEARCH FUNCTIONALITY ---
+function highlightText(element, query) {
+    if (!query) return;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    element.innerHTML = element.textContent.replace(regex, '<mark>$1</mark>');
+}
+
+function clearHighlights(element) {
+    // Remove <mark> tags
+    element.innerHTML = element.textContent;
+}
+
+function filterAndHighlightSections(query) {
+    query = query.trim();
+    // Projects section only
+    const projectsSection = document.getElementById('projects');
+    const projectCards = projectsSection ? projectsSection.querySelectorAll('.project-card') : [];
+    let projectAnyMatch = false;
+    projectCards.forEach(card => {
+        let cardMatch = false;
+        card.querySelectorAll('h2, p, a').forEach(el => {
+            clearHighlights(el);
+            if (query && el.textContent.toLowerCase().includes(query.toLowerCase())) {
+                highlightText(el, query);
+                cardMatch = true;
+            }
+        });
+        card.style.display = (query && !cardMatch) ? 'none' : '';
+        if (cardMatch) projectAnyMatch = true;
+    });
+    // Always show the Projects section itself
+    projectsSection.style.display = '';
+    // If query is empty, show all project cards and clear highlights
+    if (!query) {
+        projectCards.forEach(card => card.style.display = '');
+        projectCards.forEach(card => card.querySelectorAll('h2, p, a').forEach(clearHighlights));
     }
 } 

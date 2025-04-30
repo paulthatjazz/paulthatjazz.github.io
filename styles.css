@@ -1113,3 +1113,44 @@ body {
     50% { transform: translateY(-3px); }
     100% { transform: translateY(0); }
 }
+
+/* Search box styles */
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1.5rem;
+    position: relative;
+    margin-bottom: 10px;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.00);
+}
+
+#site-search {
+    padding: 6px 32px 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.00);
+    min-width: 160px;
+}
+#site-search:focus {
+    border: 1.5px solid #1E90FF;
+}
+.search-icon {
+    position: absolute;
+    right: 10px;
+    color: #aaa;
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+/* Highlighted search result */
+mark {
+    background: #ffe066;
+    color: #222;
+    border-radius: 3px;
+    padding: 0 2px;
+}
